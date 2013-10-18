@@ -1,17 +1,33 @@
-Mediator design pattern implemented in Java
-===========================================
+package com.mr.mediator.engine.core.test;
 
-Introduction
-------------
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-The Medaitor design pattern is like a two-way Observer. This implementation is aimed at solving the **producer-consumer problem** in simple yet efficient manner using *java.util.concurrent* package.
+import com.mr.mediator.engine.core.AbstractProducer.EXIT_STATUS;
+import com.mr.mediator.engine.core.ifaces.Mediator;
+import com.mr.mediator.engine.core.test.consumers.SimpleSocketConsumer;
+import com.mr.mediator.engine.core.test.mediators.SocketMediator;
+import com.mr.mediator.engine.core.test.producers.SimpleSocketProducer;
 
-Examples
---------
+public class SimpleEchoServerTest {
 
-This is an simple multithreaded TCP echo server. It supports graceful shutdown and producers end statuses retrieval using Java Futures.
+	public static final int CONSUMERS = 10;
+	public static final int PRODUCERS = 1;
+	public static final int QUEUE_SIZE = 1000;
 
-```java
+	private Mediator<Socket,Integer> mediator;
+	private ExecutorService threadPool;
+	private CyclicBarrier csBarrier;
+	private CyclicBarrier prBarrier;
+
+	private ArrayList<Future<EXIT_STATUS>>  producerStatuses = new ArrayList<Future<EXIT_STATUS>>();
+
 	public SimpleEchoServerTest()
 	{
 		mediator = new SocketMediator<Socket,Integer>(QUEUE_SIZE);
@@ -76,23 +92,5 @@ This is an simple multithreaded TCP echo server. It supports graceful shutdown a
 		System.out.println("Grinding took:"+(stop - start)+"ms");
 
 	}
-```
 
-
-Create Eclipse project files using Gradle
------------------------------------------
-
-To build Eclipse project files you need [Gradle](http://www.gradle.org/). 
-Use the command:
-
-```sh
-gradle eclipse
-```
-
-You must also set the GRADLE_USER_HOME variable in Eclipse (Window->Preferences->Java->Build Path->Classpath Variable). Set it to the path of the .gradle folder in your home directory.
-
-Contact
--------
-If you have questions, contact Mariusz Ryndzionek at:
-
-<mryndzionek@gmail.com>
+}

@@ -1,0 +1,33 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'osgi'
+apply plugin: 'maven'
+
+version = '0.0.1'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+repositories { mavenCentral() }
+
+jar {
+  manifest {
+    version = project.version
+  }
+}
+
+eclipse.pathVariables([GRADLE_USER_HOME:file(gradle.gradleUserHomeDir)])
+tasks.eclipse.dependsOn(cleanEclipse)
+
+task (tar, type: Tar) {
+  dependsOn(build)
+  dependsOn(javadoc)
+
+  compression = Compression.GZIP
+
+  into(project.archivesBaseName) {
+    from('./') {
+      include 'src/**/*'
+    }
+  }
+}
