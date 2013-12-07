@@ -4,7 +4,7 @@ Mediator design pattern implemented in Java
 Introduction
 ------------
 
-The Medaitor design pattern is like a two-way Observer. This implementation is aimed at solving the **producer-consumer problem** in simple yet efficient manner using *java.util.concurrent* package.
+The Medaitor design pattern is like a two-way Observer. This implementation is aimed at solving the **producer-consumer problem** in simple yet efficient manner using `java.util.concurrent` package.
 
 Examples
 --------
